@@ -1,11 +1,10 @@
 from functools import reduce
 from operator import iconcat
 
-is_prod = False
+is_prod = True
 
 def hydrothermal_vents():
     coords = readfile()
-    coords = [c for c in coords if c[0][0] == c[1][0] or c[0][1] == c[1][1]]
     xs = [p[0][0] for p in coords]
     xs.extend([p[1][0] for p in coords])
     ys = [p[0][1] for p in coords]
@@ -27,11 +26,11 @@ def apply_coordinates(board, coords):
         x1,y1 = ori[0],ori[1]
         x2,y2 = end[0],end[1]
         x,y = x1, y1
-        while x<=x2 and y<=y2:
-            #print(f'({x1},{y1})->({x2},{y2}),({x},{y})')
+        while x!=x2 or y!=y2:
             board[y][x]+=1
-            if x1 != x2: x+=1
-            if y1 != y2: y+=1
+            if x1 != x2: x+= (1 if x1<x2 else -1)
+            if y1 != y2: y+= (1 if y1<y2 else -1)
+        board[y][x]+=1
 
 def print_board(board):
     for row in board:
